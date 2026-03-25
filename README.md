@@ -1,36 +1,148 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Platzi FC — Sitio Web Oficial
 
-## Getting Started
+Sitio web del club de fútbol **Platzi FC**. De equipo amateur a imagen profesional.
 
-First, run the development server:
+## Estado del MVP
+
+| Sprint | Descripción | Estado |
+|--------|-------------|:------:|
+| S1 — Setup e infraestructura | Scaffold, Supabase, CI | ✅ |
+| S2 — Design system y layout | Header, Footer, brand colors | ✅ |
+| S3 — Páginas core + datos | Homepage, Noticias, Equipo | ✅ |
+| S4 — Páginas restantes | Partidos, El Club, Contacto | ✅ |
+| S5 — SEO, QA y deploy | Sitemap, Lighthouse, Vercel | 🔲 |
+
+## Stack
+
+- **Framework**: Next.js 16.2 (App Router + TypeScript)
+- **Estilos**: Tailwind CSS v4 + shadcn/ui (`@base-ui/react`)
+- **Base de datos**: Supabase (PostgreSQL)
+- **Hosting**: Vercel Hobby (free tier)
+- **Email**: Resend (free tier — 3K emails/mes)
+- **Formularios**: React Hook Form + Zod
+
+## Páginas
+
+| Ruta | Descripción | ISR |
+|------|-------------|:---:|
+| `/` | Homepage: Hero, próximo partido, noticias, sponsors | 60s |
+| `/noticias` | Listado de noticias | 60s |
+| `/noticias/[slug]` | Detalle de noticia | 3600s |
+| `/equipo` | Plantel agrupado por posición | 3600s |
+| `/equipo/[slug]` | Ficha individual del jugador | 3600s |
+| `/el-club` | Historia, misión, visión, valores | 86400s |
+| `/partidos` | Próximos partidos y resultados | 300s |
+| `/contacto` | Formulario de contacto | — |
+
+## Setup local
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/sebastiangranada527/platzi-fc.git
+cd platzi-fc
+```
+
+### 2. Instalar dependencias
+
+```bash
+npm install
+```
+
+### 3. Configurar variables de entorno
+
+```bash
+cp .env.local.example .env.local
+```
+
+Completar `.env.local` con los valores del proyecto Supabase:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
+
+# Opcional — si no se configura, el formulario loguea en consola
+RESEND_API_KEY=re_xxxxxxxxxxxx
+CONTACT_EMAIL_TO=contacto@platzifc.com
+```
+
+### 4. Correr en desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estructura del proyecto
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                  # Rutas y páginas (App Router)
+│   ├── layout.tsx        # Root layout con Header y Footer
+│   ├── page.tsx          # Homepage
+│   ├── noticias/
+│   ├── equipo/
+│   ├── partidos/
+│   ├── el-club/
+│   ├── contacto/
+│   └── api/contacto/     # API Route para formulario de contacto
+├── components/
+│   ├── layout/           # Header, Footer, MobileNav, SkipToContent
+│   ├── home/             # HeroSection, NextMatch, LatestNews, SponsorsBar
+│   ├── news/             # NewsCard
+│   ├── team/             # PlayerCard
+│   └── ui/               # shadcn/ui components
+└── lib/
+    ├── supabase/         # client.ts, server.ts, types.ts
+    └── utils.ts          # formatDate, formatMatchDate, cn, slugify
+```
 
-## Learn More
+## Base de datos (Supabase)
 
-To learn more about Next.js, take a look at the following resources:
+Tablas en producción:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Tabla | Descripción | Registros |
+|-------|-------------|:---------:|
+| `category` | Categorías de noticias | 3 |
+| `club_info` | Información del club (singleton) | 1 |
+| `sponsor` | Patrocinadores | 4 |
+| `player` | Jugadores y cuerpo técnico | 14 |
+| `match` | Partidos (pasados y futuros) | 10 |
+| `news` | Noticias y artículos | 8 |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Gestión de contenido
 
-## Deploy on Vercel
+El contenido se administra desde el **Table Editor de Supabase** (`supabase.com/dashboard`). No se requiere CMS externo en esta fase.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Acción | Tabla | Pasos |
+|--------|-------|-------|
+| Crear noticia | `news` | Insert row → llenar title, slug, excerpt, author, category_id |
+| Agregar jugador | `player` | Insert row → llenar name, slug, number, position |
+| Cargar resultado | `match` | Editar fila → score_home, score_away, status = 'finished' |
+| Editar info del club | `club_info` | Editar la única fila existente |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Nota sobre `@base-ui/react`
+
+shadcn/ui en este proyecto usa `@base-ui/react` como primitivas. El patrón `asChild` **no existe** — se usa la prop `render`:
+
+```tsx
+// ✅ Correcto
+<Button render={<Link href="/ruta" />}>Ir</Button>
+
+// ❌ No funciona
+<Button asChild><Link href="/ruta">Ir</Link></Button>
+```
+
+## Comandos
+
+```bash
+npm run dev      # Servidor de desarrollo
+npm run build    # Build de producción
+npm run start    # Servidor de producción local
+npm run lint     # ESLint
+```
+
+## Deploy
+
+El proyecto está configurado para deploy automático en **Vercel** desde la rama `master`. Configurar las variables de entorno en el dashboard de Vercel antes del primer deploy.
