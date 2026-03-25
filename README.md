@@ -2,6 +2,8 @@
 
 Sitio web del club de fútbol **Platzi FC**. De equipo amateur a imagen profesional.
 
+**Live:** https://platzi-fc-six.vercel.app
+
 ## Estado del MVP
 
 | Sprint | Descripción | Estado |
@@ -10,7 +12,7 @@ Sitio web del club de fútbol **Platzi FC**. De equipo amateur a imagen profesio
 | S2 — Design system y layout | Header, Footer, brand colors | ✅ |
 | S3 — Páginas core + datos | Homepage, Noticias, Equipo | ✅ |
 | S4 — Páginas restantes | Partidos, El Club, Contacto | ✅ |
-| S5 — SEO, QA y deploy | Sitemap, Lighthouse, Vercel | 🔲 |
+| S5 — SEO, QA y deploy | Sitemap, JSON-LD, favicon, OG image, Vercel | ✅ |
 
 ## Stack
 
@@ -145,4 +147,16 @@ npm run lint     # ESLint
 
 ## Deploy
 
-El proyecto está configurado para deploy automático en **Vercel** desde la rama `master`. Configurar las variables de entorno en el dashboard de Vercel antes del primer deploy.
+El proyecto está en producción en **https://platzi-fc-six.vercel.app**
+
+Deploy automático en Vercel desde la rama `master`. Cada push hace deploy a producción; cada PR genera una URL de preview.
+
+Variables de entorno requeridas en el dashboard de Vercel:
+
+| Variable | Descripción |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon key pública de Supabase |
+| `NEXT_PUBLIC_SITE_URL` | URL del sitio en producción |
+| `RESEND_API_KEY` | API key de Resend (opcional) |
+| `CONTACT_EMAIL_TO` | Email destino del formulario (opcional) |
