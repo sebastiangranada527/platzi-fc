@@ -34,7 +34,7 @@ export default async function NoticiasPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {newsList.map((news) => (
             <div key={news.id} className="relative">
-              <NewsCard news={news as Parameters<typeof NewsCard>[0]["news"]} />
+              <NewsCard news={news as Parameters<typeof NewsCard>[0]["news"]} headingLevel="h2" />
             </div>
           ))}
         </div>

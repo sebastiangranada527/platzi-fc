@@ -8,9 +8,10 @@ type NewsWithCategory = News & { category: Category | null }
 
 interface NewsCardProps {
   news: NewsWithCategory
+  headingLevel?: "h2" | "h3"
 }
 
-export function NewsCard({ news }: NewsCardProps) {
+export function NewsCard({ news, headingLevel: Heading = "h3" }: NewsCardProps) {
   return (
     <Card className="group overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
       {/* Image placeholder */}
@@ -34,11 +35,11 @@ export function NewsCard({ news }: NewsCardProps) {
           )}
         </div>
 
-        <h3 className="font-bold text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
+        <Heading className="font-bold text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
           <Link href={`/noticias/${news.slug}`} className="after:absolute after:inset-0">
             {news.title}
           </Link>
-        </h3>
+        </Heading>
 
         {news.excerpt && (
           <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 flex-1">
