@@ -40,7 +40,7 @@ export async function NextMatch() {
 
             {/* VS */}
             <div className="flex flex-col items-center gap-1 text-center">
-              <span className="text-3xl font-black text-white/30">VS</span>
+              <span className="text-3xl font-black text-white/60">VS</span>
               <div className="flex items-center gap-1 text-xs text-white/50">
                 <Calendar className="w-3 h-3" />
                 {match.match_date ? formatMatchDate(match.match_date) : "Por confirmar"}

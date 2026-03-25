@@ -84,7 +84,7 @@ export default async function NoticiaDetailPage({ params }: Props) {
             </Badge>
           )}
           {news.featured && (
-            <Badge className="bg-primary/20 text-primary border-primary/30">Destacada</Badge>
+            <Badge className="bg-primary text-[#0a0e1a] border-primary font-semibold">Destacada</Badge>
           )}
         </div>
         <h1 className="text-3xl md:text-4xl font-black leading-tight mb-4">{news.title}</h1>
