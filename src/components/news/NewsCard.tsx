@@ -28,7 +28,7 @@ export function NewsCard({ news }: NewsCardProps) {
             </Badge>
           )}
           {news.featured && (
-            <Badge className="text-xs bg-primary/20 text-primary border-primary/30">
+            <Badge className="text-xs bg-primary text-[#0a0e1a] border-primary font-semibold">
               Destacada
             </Badge>
           )}
