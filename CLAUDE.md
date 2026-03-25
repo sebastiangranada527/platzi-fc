@@ -108,7 +108,7 @@ Si modificas el schema, regenera los tipos: usa el MCP de Supabase o `supabase g
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=        # requerida
 NEXT_PUBLIC_SUPABASE_ANON_KEY=   # requerida
-NEXT_PUBLIC_SITE_URL=            # default: https://platzi-fc.vercel.app
+NEXT_PUBLIC_SITE_URL=            # default: https://platzi-fc-six.vercel.app
 RESEND_API_KEY=                  # opcional — email de contacto
 CONTACT_EMAIL_TO=                # opcional — destino del formulario
 ```

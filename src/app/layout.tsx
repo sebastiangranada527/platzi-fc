@@ -13,11 +13,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://platzi-fc.vercel.app"
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://platzi-fc-six.vercel.app"
   ),
   title: {
     template: "%s | Platzi FC",
-    default: "Platzi FC — Club de Fútbol Oficial",
+    default: "Platzi FC — Erika Te Amo",
   },
   description:
     "Sitio web oficial de Platzi FC. Noticias, plantel, calendario de partidos, resultados y toda la información del club.",
