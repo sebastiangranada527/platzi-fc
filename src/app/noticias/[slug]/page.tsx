@@ -41,8 +41,33 @@ export default async function NoticiaDetailPage({ params }: Props) {
 
   if (!news) notFound()
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://platzi-fc.vercel.app"
+
+  const newsArticleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: news.title,
+    description: news.excerpt ?? undefined,
+    datePublished: news.published_at,
+    dateModified: news.updated_at,
+    author: news.author
+      ? { "@type": "Person", name: news.author }
+      : { "@type": "Organization", name: "Platzi FC" },
+    publisher: {
+      "@type": "Organization",
+      name: "Platzi FC",
+      url: baseUrl,
+    },
+    url: `${baseUrl}/noticias/${news.slug}`,
+  }
+
   return (
     <article className="container mx-auto px-4 py-12 max-w-3xl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleJsonLd) }}
+      />
       <nav className="text-sm text-muted-foreground mb-8 flex gap-2" aria-label="Breadcrumb">
         <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
         <span>/</span>

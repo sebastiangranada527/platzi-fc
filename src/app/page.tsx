@@ -7,9 +7,31 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export const revalidate = 60
 
+const sportsTeamJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SportsTeam",
+  name: "Platzi FC",
+  sport: "Soccer",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://platzi-fc.vercel.app",
+  foundingDate: "2020",
+  location: {
+    "@type": "Place",
+    name: "Campo Platzi",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Bogotá",
+      addressCountry: "CO",
+    },
+  },
+}
+
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(sportsTeamJsonLd) }}
+      />
       <HeroSection />
       <Suspense fallback={<div className="bg-[var(--brand-dark)] py-10 h-48" />}>
         <NextMatch />

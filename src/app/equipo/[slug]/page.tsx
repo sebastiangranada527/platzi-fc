@@ -44,8 +44,28 @@ export default async function PlayerDetailPage({ params }: Props) {
 
   const stats = player.stats as Record<string, number> | null
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://platzi-fc.vercel.app"
+
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: player.name,
+    nationality: player.nationality ?? undefined,
+    url: `${baseUrl}/equipo/${player.slug}`,
+    memberOf: {
+      "@type": "SportsTeam",
+      name: "Platzi FC",
+      url: baseUrl,
+    },
+  }
+
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
       <nav className="text-sm text-muted-foreground mb-8 flex gap-2" aria-label="Breadcrumb">
         <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
         <span>/</span>
